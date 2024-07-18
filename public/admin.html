@@ -1,10 +1,60 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset=utf-8>
-  <title>Yodlr Admin Page</title>
-</head>
-<body>
-  List user data here
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <link href="./output.css" rel="stylesheet" />
+    <title>Yodlr Admin Page</title>
+  </head>
+  <body>
+    <h1 class="heading">Users</h1>
+    <div class="flex justify-around border-2 border-black">
+      <div class="flex flex-col">
+        <p class="font-bold">Name</p>
+        <ul id="name-column"></ul>
+      </div>
+      <div class="flex flex-col">
+        <p class="font-bold">Email</p>
+        <ul id="email-column"></ul>
+      </div>
+      <div class="flex flex-col">
+        <p class="font-bold">Status</p>
+        <ul id="status-column"></ul>
+      </div>
+    </div>
+    <ul id="users-list" class="flex flex-col justify-center text-center"></ul>
+    <div class="flex flex-col justify-center">
+      <a href="/" class="self-center">
+        <button class="btn btn-blue m-2">Go Home</button>
+      </a>
+    </div>
+  </body>
+  <script>
+    async function getUsers() {
+      const res = await fetch(`http://localhost:3000/users`).then((res) =>
+        res.json(),
+      );
+      const nameCol = document.getElementById('name-column');
+      const emailCol = document.getElementById('email-column');
+      const stateCol = document.getElementById('status-column');
+
+      res.forEach((user) => {
+        const nameLi = document.createElement('li');
+        const emailLi = document.createElement('li');
+        const stateLi = document.createElement('li');
+
+        nameLi.textContent = `${user.firstName} ${user.lastName}`;
+        emailLi.textContent = `${user.email}`;
+        stateLi.textContent = `${user.state}`;
+
+        nameCol.appendChild(nameLi);
+        emailCol.appendChild(emailLi);
+        stateCol.appendChild(stateLi);
+      });
+
+      console.log(res);
+      return res;
+    }
+
+    getUsers(); // Call the function to fetch and display the users
+  </script>
 </html>
